@@ -1,9 +1,9 @@
 FROM gradle:7.4.0-jdk17
 
-WORKDIR /app
+WORKDIR .
 
-COPY /app .
+COPY . .
 
 RUN gradle installDist
 
-CMD ./build/classes/java/main/hexlet/code/App
+CMD ./build/install/app/bin/app
