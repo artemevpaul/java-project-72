@@ -1,11 +1,4 @@
-FROM gradle:7.4.0-jdk17
-
+FROM openjdk:17-jdk-slim
 WORKDIR /app
-
-COPY . .
-
-RUN ./gradlew clean build shadowJar --no-daemon
-
-COPY build/libs app-1.0-SNAPSHOT.jar
-
+COPY build/libs/*.jar app.jar
 CMD ["java", "-jar", "app.jar"]
