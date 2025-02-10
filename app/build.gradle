@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 group = 'hexlet.code'
@@ -19,6 +20,17 @@ dependencies {
 
 application {
     mainClass = 'hexlet.code.App'
+}
+
+tasks.named('jar') {
+    manifest {
+        attributes 'Main-Class': 'hexlet.code.App'
+    }
+}
+
+shadowJar {
+    archiveBaseName.set('app')
+    archiveClassifier.set('')
 }
 
 test {
