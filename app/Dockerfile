@@ -1,9 +1,11 @@
 FROM gradle:7.4.0-jdk17
 
-WORKDIR .
+WORKDIR /app
 
 COPY . .
 
-RUN gradle installDist
+RUN ./gradlew clean build shadowJar --no-daemon
 
-CMD ./build/install/app/bin/app
+COPY build/libs/app.jar app.jar
+
+CMD ["java", "-jar", "app.jar"]
