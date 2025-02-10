@@ -1,4 +1,9 @@
-FROM openjdk:17-jdk-slim
+FROM gradle:8.5.0-jdk21
+
 WORKDIR /app
-COPY build/libs/*.jar app.jar
-CMD ["java", "-jar", "app.jar"]
+
+COPY /app .
+
+RUN gradle installDist
+
+CMD ./build/install/app/bin/app
