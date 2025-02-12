@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("io.freefair.lombok") version "8.6"
 }
 
 group = 'hexlet.code'
@@ -16,6 +17,8 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     implementation("io.javalin:javalin:6.4.0")
     implementation('org.slf4j:slf4j-simple:2.0.16')
+    implementation 'com.zaxxer:HikariCP:6.2.1'
+    implementation('com.h2database:h2:2.3.232')
 }
 
 application {
@@ -26,11 +29,6 @@ tasks.named('jar') {
     manifest {
         attributes 'Main-Class': 'hexlet.code.App'
     }
-}
-
-shadowJar {
-    archiveBaseName.set('app')
-    archiveClassifier.set('')
 }
 
 test {
