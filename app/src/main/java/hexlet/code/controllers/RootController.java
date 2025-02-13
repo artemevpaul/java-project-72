@@ -7,4 +7,3 @@ import io.javalin.http.Handler;
             ctx.render("index.html");
         };
     }
-}
