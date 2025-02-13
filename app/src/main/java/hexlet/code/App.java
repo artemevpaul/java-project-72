@@ -1,5 +1,6 @@
 package hexlet.code;
 
+import hexlet.code.controllers.RootController;
 import hexlet.code.repository.BaseRepository;
 
 import com.zaxxer.hikari.HikariConfig;
@@ -65,6 +66,7 @@ public class App {
             config.fileRenderer(new JavalinJte(createTemplateEngine()));
         });
 
+        app.get("/", RootController.welcome);
 
         return app;
     }
