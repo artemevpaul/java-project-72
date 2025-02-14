@@ -5,6 +5,7 @@ import hexlet.code.repository.BaseRepository;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import hexlet.code.util.NamedRoutes;
 import io.javalin.Javalin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,8 @@ import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
 import io.javalin.rendering.template.JavalinJte;
 import gg.jte.resolve.ResourceCodeResolver;
+
+import hexlet.code.controllers.UrlController;
 
 public class App {
     private static int getPort() {
@@ -67,6 +70,8 @@ public class App {
         });
 
         app.get("/", RootController.welcome);
+        app.get(NamedRoutes.rootPath(), UrlController::root);
+        app.post(NamedRoutes.urlsPath(), UrlController::create);
 
         return app;
     }
