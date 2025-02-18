@@ -64,4 +64,21 @@ public class UrlRepository {
             return Optional.empty();
         }
     }
+    public static List<Url> getEntities() throws SQLException {
+        var sql = "SELECT * FROM urls";
+        try (var conn = dataSource.getConnection();
+             var stmt = conn.prepareStatement(sql)) {
+            var resultSet = stmt.executeQuery();
+            var result = new ArrayList<Url>();
+            while (resultSet.next()) {
+                var id = resultSet.getLong("id");
+                var name = resultSet.getString("name");
+                //var created = resultSet.getString("created_at");
+                var url = new Url(name);
+                url.setId(id);
+                result.add(url);
+            }
+            return result;
+        }
+    }
 }

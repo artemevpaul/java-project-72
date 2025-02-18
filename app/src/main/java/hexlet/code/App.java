@@ -1,6 +1,5 @@
 package hexlet.code;
 
-import hexlet.code.controllers.RootController;
 import hexlet.code.repository.BaseRepository;
 
 import com.zaxxer.hikari.HikariConfig;
@@ -69,9 +68,15 @@ public class App {
             config.fileRenderer(new JavalinJte(createTemplateEngine()));
         });
 
-        app.get("/", RootController.welcome);
+        app.before(ctx -> {
+            ctx.contentType("text/html; charset=utf-8");
+        });
+
         app.get(NamedRoutes.rootPath(), UrlController::root);
         app.post(NamedRoutes.urlsPath(), UrlController::create);
+        app.get(NamedRoutes.urlsPath(), UrlController::showList);
+        app.get(NamedRoutes.urlPath("{id}"), UrlController::show);
+
 
         return app;
     }

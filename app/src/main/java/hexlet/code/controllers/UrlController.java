@@ -2,8 +2,9 @@ package hexlet.code.controllers;
 
 import static io.javalin.rendering.template.TemplateUtil.model;
 
-//import hexlet.code.dto.UrlsPage;
-//import hexlet.code.dto.UrlPage;
+
+import hexlet.code.dto.UrlPage;
+import hexlet.code.dto.UrlsPage;
 import hexlet.code.util.NamedRoutes;
 
 import hexlet.code.dto.MainPage;
@@ -11,7 +12,7 @@ import hexlet.code.model.Url;
 import hexlet.code.repository.UrlRepository;
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
-//import hexlet.code.repository.CheckRepository;
+
 
 
 import java.net.URI;
@@ -56,25 +57,20 @@ public class UrlController {
         }
     }
 
-//    public static void showList(Context ctx) throws SQLException {
-//        var urls = UrlRepository.getEntities();
-//        String flash = ctx.consumeSessionAttribute("flash");
-//        String flashtype = ctx.consumeSessionAttribute("flash-type");
-//        var page = new UrlsPage(urls, flash, flashtype);
-//        ctx.render("urls/list.jte", model("page", page));
-//    }
-//
-//    public static void show(Context ctx) throws SQLException {
-//        var id = ctx.pathParamAsClass("id", Long.class).get();
-//        var url = UrlRepository.find(id)
-//                .orElseThrow(() -> new NotFoundResponse("Url not found"));
-//        String flash = ctx.consumeSessionAttribute("flash");
-//        String flashtype = ctx.consumeSessionAttribute("flash-type");
-//        var cheks = CheckRepository.findAllCheck(id);
-//        var page = new UrlPage(url, cheks, flash, flashtype);
-//
-//        ctx.render("urls/show.jte", model("page", page));
-//    }
+    public static void show(Context ctx) throws SQLException {
+        var id = ctx.pathParamAsClass("id", Long.class).get();
+        var url = UrlRepository.find(id)
+                .orElseThrow(() -> new NotFoundResponse("Url not found"));
+        var page = new UrlPage(url);
+        ctx.render("urls/show.jte", model("page", page));
+    }
 
+    public static void showList(Context ctx) throws SQLException {
+        var urls = UrlRepository.getEntities();
+        String flash = ctx.consumeSessionAttribute("flash");
+        String flashtype = ctx.consumeSessionAttribute("flash-type");
+        var page = new UrlsPage(urls);
+        ctx.render("urls/list.jte", model("page", page));
+    }
 
 }
