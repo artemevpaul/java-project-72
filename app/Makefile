@@ -15,6 +15,9 @@ build:
 
 start: dev
 
+report:
+	./gradlew jacocoTestReport
+
 install:
 	./gradlew installDist
 
