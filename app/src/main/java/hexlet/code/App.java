@@ -1,5 +1,6 @@
 package hexlet.code;
 
+import hexlet.code.controllers.ChecksController;
 import hexlet.code.repository.BaseRepository;
 
 import com.zaxxer.hikari.HikariConfig;
@@ -76,6 +77,7 @@ public class App {
         app.post(NamedRoutes.urlsPath(), UrlController::create);
         app.get(NamedRoutes.urlsPath(), UrlController::showList);
         app.get(NamedRoutes.urlPath("{id}"), UrlController::show);
+        //app.post(NamedRoutes.urlChecksPath("{id}"), ChecksController::add);
 
 
         return app;
