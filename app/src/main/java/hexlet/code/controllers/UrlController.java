@@ -5,6 +5,7 @@ import static io.javalin.rendering.template.TemplateUtil.model;
 
 import hexlet.code.dto.UrlPage;
 import hexlet.code.dto.UrlsPage;
+import hexlet.code.repository.CheckRepository;
 import hexlet.code.util.NamedRoutes;
 
 import hexlet.code.dto.MainPage;
@@ -58,18 +59,22 @@ public class UrlController {
     }
 
     public static void show(Context ctx) throws SQLException {
-        var id = ctx.pathParamAsClass("id", Long.class).get();
-        var url = UrlRepository.find(id)
-                .orElseThrow(() -> new NotFoundResponse("Url not found"));
-        var page = new UrlPage(url);
-        ctx.render("urls/show.jte", model("page", page));
+            var id = ctx.pathParamAsClass("id", Long.class).get();
+            var url = UrlRepository.find(id)
+                    .orElseThrow(() -> new NotFoundResponse("Url not found"));
+            String flash = ctx.consumeSessionAttribute("flash");
+            String flashtype = ctx.consumeSessionAttribute("flash-type");
+            var checks = CheckRepository.findAllChecks(id);
+            var page = new UrlPage(url, checks, flash, flashtype);
+
+            ctx.render("urls/show.jte", model("page", page));
     }
 
     public static void showList(Context ctx) throws SQLException {
         var urls = UrlRepository.getEntities();
         String flash = ctx.consumeSessionAttribute("flash");
         String flashtype = ctx.consumeSessionAttribute("flash-type");
-        var page = new UrlsPage(urls);
+        var page = new UrlsPage(urls, flash, flashtype);
         ctx.render("urls/list.jte", model("page", page));
     }
 

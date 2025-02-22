@@ -1,6 +1,7 @@
 package hexlet.code.repository;
 
 import hexlet.code.model.Url;
+import hexlet.code.model.UrlCheck;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -73,8 +74,16 @@ public class UrlRepository {
             while (resultSet.next()) {
                 var id = resultSet.getLong("id");
                 var name = resultSet.getString("name");
-                //var created = resultSet.getString("created_at");
+                var statusCode = resultSet.getInt("status_code");
+                var last = resultSet.getTimestamp("last");
                 var url = new Url(name);
+                if (statusCode != 0) {
+                    UrlCheck urlCheck = new UrlCheck();
+                    urlCheck.setUrlId(id);
+                    urlCheck.setStatusCode(statusCode);
+                    urlCheck.setCreatedAt(last.toLocalDateTime());
+                    url.setLastCheck(urlCheck);
+                }
                 url.setId(id);
                 result.add(url);
             }

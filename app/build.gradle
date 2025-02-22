@@ -39,6 +39,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
 
     implementation 'com.konghq:unirest-java:3.14.5'
+    implementation 'org.jsoup:jsoup:1.15.3'
 }
 
 application {

@@ -77,7 +77,7 @@ public class App {
         app.post(NamedRoutes.urlsPath(), UrlController::create);
         app.get(NamedRoutes.urlsPath(), UrlController::showList);
         app.get(NamedRoutes.urlPath("{id}"), UrlController::show);
-        //app.post(NamedRoutes.urlChecksPath("{id}"), ChecksController::add);
+        app.post(NamedRoutes.urlChecksPath("{id}"), ChecksController::check);
 
 
         return app;

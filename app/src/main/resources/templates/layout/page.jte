@@ -52,7 +52,7 @@
     <div class="container-xl">
         <div class="text-center">
             created by
-            <a href="https://github.com/artemevpaul" target="_blank">Pavel</a>
+            <a href="https://github.com/artemevpaul" target="_blank">Pavel Artemev</a>
         </div>
     </div>
 </footer>

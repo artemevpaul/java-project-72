@@ -43,6 +43,18 @@ content = @`
                         <th scope="col">Дата проверки</th>
                     </tr>
                     </thead>
+                    @if(page.getChecksList() != null)
+                        @for(var urlCheck : page.getChecksList())
+                            <tr>
+                                <td>${urlCheck.getId()}</td>
+                                <td>${urlCheck.getStatusCode()}</td>
+                                <td>${urlCheck.getTitle()}</td>
+                                <td>${urlCheck.getH1()}</td>
+                                <td>${urlCheck.getDescription()}</td>
+                                <td>${String.valueOf(urlCheck.getCreatedAt())}</td>
+                            </tr>
+                        @endfor
+                    @endif
                 </table>
 
             </div>

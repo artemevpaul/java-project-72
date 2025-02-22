@@ -32,6 +32,8 @@ content = @`
                         <td>
                             <a href="${NamedRoutes.urlPath(url.getId())}">${url.getName()}</a>
                         </td>
+                        <td>${url.getLastCheck() == null ? "Проверка не проводилась" : url.getLastCheck().getCreatedAt().toString()}</td>
+                        <td>${url.getLastCheck() == null ? "Проверка не проводилась" : String.valueOf(url.getLastCheck().getStatusCode())}</td>
                     </tr>
                     @endfor
                     </tbody>
