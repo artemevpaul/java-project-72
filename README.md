@@ -21,11 +21,11 @@ cd java-project-72
 ```shell
 ./gradlew run
 ```
-### **23️⃣ Run tests**
+### **3️⃣ Run tests**
 ```shell
 ./gradlew test
 ```
-Made by Pavel Artemev
+### **💙 Made with passion by [Pavel Artemev](https://github.com/artemevpaul)**
 
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/artemevpaul/java-project-72/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/artemevpaul/java-project-72/actions)
