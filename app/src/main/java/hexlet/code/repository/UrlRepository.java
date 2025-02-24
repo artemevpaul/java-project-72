@@ -66,28 +66,39 @@ public class UrlRepository {
         }
     }
     public static List<Url> getEntities() throws SQLException {
-        var sql = "SELECT * FROM urls";
+        var sql = "SELECT urls.id, urls.name, " +
+                "COALESCE(url_checks.status_code, 0) AS status_code, " +
+                "COALESCE(url_checks.created_at, CURRENT_TIMESTAMP) AS last " +
+                "FROM urls " +
+                "LEFT JOIN url_checks ON urls.id = url_checks.url_id " +
+                "ORDER BY urls.created_at DESC";
+
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {
             var resultSet = stmt.executeQuery();
             var result = new ArrayList<Url>();
+
             while (resultSet.next()) {
                 var id = resultSet.getLong("id");
                 var name = resultSet.getString("name");
                 var statusCode = resultSet.getInt("status_code");
-                var last = resultSet.getTimestamp("last");
+                var lastCheckTimestamp = resultSet.getTimestamp("last");
+
                 var url = new Url(name);
+                url.setId(id);
+
                 if (statusCode != 0) {
                     UrlCheck urlCheck = new UrlCheck();
                     urlCheck.setUrlId(id);
                     urlCheck.setStatusCode(statusCode);
-                    urlCheck.setCreatedAt(last.toLocalDateTime());
+                    urlCheck.setCreatedAt(lastCheckTimestamp.toLocalDateTime());
                     url.setLastCheck(urlCheck);
                 }
-                url.setId(id);
+
                 result.add(url);
             }
             return result;
         }
     }
+
 }
