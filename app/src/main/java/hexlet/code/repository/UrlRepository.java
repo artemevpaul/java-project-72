@@ -30,6 +30,7 @@ public class UrlRepository {
             }
         }
     }
+
     public static Optional<Url> find(Long id) throws SQLException {
         var sql = "SELECT * FROM urls WHERE id = ?";
         try (var conn = dataSource.getConnection();
@@ -65,6 +66,7 @@ public class UrlRepository {
             return Optional.empty();
         }
     }
+
     public static List<Url> getEntities() throws SQLException {
         var sql = "SELECT urls.id, urls.name, " +
                 "COALESCE(url_checks.status_code, 0) AS status_code, " +

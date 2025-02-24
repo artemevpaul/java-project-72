@@ -1,25 +1,21 @@
 package hexlet.code.controllers;
 
-import static io.javalin.rendering.template.TemplateUtil.model;
-
-
+import hexlet.code.dto.MainPage;
 import hexlet.code.dto.UrlPage;
 import hexlet.code.dto.UrlsPage;
-import hexlet.code.repository.CheckRepository;
-import hexlet.code.util.NamedRoutes;
-
-import hexlet.code.dto.MainPage;
 import hexlet.code.model.Url;
+import hexlet.code.repository.CheckRepository;
 import hexlet.code.repository.UrlRepository;
+import hexlet.code.util.NamedRoutes;
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
-
-
 
 import java.net.URI;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Collections;
+
+import static io.javalin.rendering.template.TemplateUtil.model;
 
 
 public class UrlController {
@@ -59,15 +55,15 @@ public class UrlController {
     }
 
     public static void show(Context ctx) throws SQLException {
-            var id = ctx.pathParamAsClass("id", Long.class).get();
-            var url = UrlRepository.find(id)
-                    .orElseThrow(() -> new NotFoundResponse("Url not found"));
-            String flash = ctx.consumeSessionAttribute("flash");
-            String flashtype = ctx.consumeSessionAttribute("flash-type");
-            var checks = CheckRepository.findAllChecks(id);
-            var page = new UrlPage(url, checks, flash, flashtype);
+        var id = ctx.pathParamAsClass("id", Long.class).get();
+        var url = UrlRepository.find(id)
+                .orElseThrow(() -> new NotFoundResponse("Url not found"));
+        String flash = ctx.consumeSessionAttribute("flash");
+        String flashtype = ctx.consumeSessionAttribute("flash-type");
+        var checks = CheckRepository.findAllChecks(id);
+        var page = new UrlPage(url, checks, flash, flashtype);
 
-            ctx.render("urls/show.jte", model("page", page));
+        ctx.render("urls/show.jte", model("page", page));
     }
 
     public static void showList(Context ctx) throws SQLException {
