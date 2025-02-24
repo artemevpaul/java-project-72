@@ -11,6 +11,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Cache clean
+        run: rm -rf ~/.gradle/caches
       - name: Checkout sources
         uses: actions/checkout@v4
       - name: Setup Java
