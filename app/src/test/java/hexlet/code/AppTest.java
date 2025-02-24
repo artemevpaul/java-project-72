@@ -1,17 +1,12 @@
 package hexlet.code;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-
 import hexlet.code.model.Url;
 import hexlet.code.model.UrlCheck;
 import hexlet.code.repository.CheckRepository;
 import hexlet.code.repository.UrlRepository;
+import hexlet.code.util.NamedRoutes;
 import io.javalin.Javalin;
 import io.javalin.testtools.JavalinTest;
-import kong.unirest.HttpResponse;
-import kong.unirest.Unirest;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterAll;
@@ -20,20 +15,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import hexlet.code.util.NamedRoutes;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class AppTest {
-    private Javalin app;
+    public static String baseUrl;
     static MockWebServer mockServer;
     static String urlName;
-    public static String baseUrl;
+    private Javalin app;
 
     @BeforeAll
     static void serverSetUp() throws Exception {
@@ -51,6 +44,7 @@ public class AppTest {
     public final void setUp() throws IOException, SQLException {
         app = App.getApp();
     }
+
     @Test
     public void testMainPage() {
         JavalinTest.test(app, (server, client) -> {
@@ -59,6 +53,7 @@ public class AppTest {
             assertThat(response.body().string()).contains("Анализатор страниц");
         });
     }
+
     @Test
     public void testUrlsPage() {
         JavalinTest.test(app, (server, client) -> {
@@ -66,6 +61,7 @@ public class AppTest {
             assertThat(response.code()).isEqualTo(200);
         });
     }
+
     @Test
     public void testCreateUrl() {
         JavalinTest.test(app, (server, client) -> {
@@ -90,13 +86,13 @@ public class AppTest {
 
     @Test
     void testCheckUrl() throws SQLException {
-        String fakeHtml = "<html><head><title>Test Site</title></head>" +
-                "<body><h1>Welcome</h1>" +
-                "<meta name='description' content='Test description'>" +
-                "</body></html>";
+        String testHtml = "<html><head><title>Test Site</title></head>"
+                + "<body><h1>Welcome</h1>"
+                + "<meta name='description' content='Test description'>"
+                + "</body></html>";
         MockResponse mockResponse = new MockResponse()
                 .setResponseCode(200)
-                .setBody(fakeHtml);
+                .setBody(testHtml);
         mockServer.enqueue(mockResponse);
         var url = new Url(baseUrl);
         UrlRepository.save(url);

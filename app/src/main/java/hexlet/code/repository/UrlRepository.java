@@ -68,12 +68,12 @@ public class UrlRepository {
     }
 
     public static List<Url> getEntities() throws SQLException {
-        var sql = "SELECT urls.id, urls.name, " +
-                "COALESCE(url_checks.status_code, 0) AS status_code, " +
-                "COALESCE(url_checks.created_at, CURRENT_TIMESTAMP) AS last " +
-                "FROM urls " +
-                "LEFT JOIN url_checks ON urls.id = url_checks.url_id " +
-                "ORDER BY urls.created_at DESC";
+        var sql = "SELECT urls.id, urls.name, "
+                + "COALESCE(url_checks.status_code, 0) AS status_code, "
+                + "COALESCE(url_checks.created_at, CURRENT_TIMESTAMP) AS last "
+                + "FROM urls "
+                + "LEFT JOIN url_checks ON urls.id = url_checks.url_id "
+                + "ORDER BY urls.created_at DESC";
 
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {
