@@ -1,22 +1,51 @@
 package hexlet.code;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import hexlet.code.model.Url;
-import hexlet.code.repository.BaseRepository;
+import hexlet.code.model.UrlCheck;
+import hexlet.code.repository.CheckRepository;
 import hexlet.code.repository.UrlRepository;
+import io.javalin.Javalin;
+import io.javalin.testtools.JavalinTest;
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import io.javalin.Javalin;
-import io.javalin.testtools.JavalinTest;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import hexlet.code.util.NamedRoutes;
+
 
 public class AppTest {
     private Javalin app;
+    static MockWebServer mockServer;
+    static String urlName;
+    public static String baseUrl;
+
+    @BeforeAll
+    static void serverSetUp() throws Exception {
+        mockServer = new MockWebServer();
+        mockServer.start();
+        baseUrl = mockServer.url("/").toString();
+    }
+
+    @AfterAll
+    public static void afterAll() throws IOException {
+        mockServer.shutdown();
+    }
 
     @BeforeEach
     public final void setUp() throws IOException, SQLException {
@@ -56,6 +85,31 @@ public class AppTest {
             var response = client.get("/urls/" + url.getId());
             assertThat(response.code()).isEqualTo(200);
             assertThat(response.body().string()).contains("https://www.youtube.com");
+        });
+    }
+
+    @Test
+    void testCheckUrl() throws SQLException {
+        String fakeHtml = "<html><head><title>Test Site</title></head>" +
+                "<body><h1>Welcome</h1>" +
+                "<meta name='description' content='Test description'>" +
+                "</body></html>";
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(200)
+                .setBody(fakeHtml);
+        mockServer.enqueue(mockResponse);
+        var url = new Url(baseUrl);
+        UrlRepository.save(url);
+        var savedUrl = UrlRepository.findName(url.getName()).orElseThrow();
+
+        JavalinTest.test(app, (server, client) -> {
+            var response = client.post(NamedRoutes.urlChecksPath(savedUrl.getId()));
+            List<UrlCheck> checks = CheckRepository.findAllChecks(savedUrl.getId());
+            var check = checks.get(0);
+            assertThat(response.code()).isEqualTo(200);
+            assertThat(check.getStatusCode()).isEqualTo(200);
+            assertThat(check.getH1()).isEqualTo("Welcome");
+            assertThat(check.getDescription()).isEqualTo("Test description");
         });
     }
 }
