@@ -23,7 +23,16 @@ public class ChecksController {
                 .orElseThrow(() -> new NotFoundResponse("Url not found"));
 
         try {
-
+            HttpResponse<String> response = Unirest.get(url.getName()).asString();
+            int statusCode = response.getStatus();
+            Document document = Jsoup.parse(response.getBody());
+            String title = document.title();
+            var h1temp = document.selectFirst("h1");
+            String h1 = h1temp == null ? "" : h1temp.text();
+            var descriptionTemp = document.selectFirst("meta[name=description]");
+            String description = descriptionTemp == null ? "" : descriptionTemp.attr("content");
+            UrlCheck check = new UrlCheck(urlId, statusCode, h1, title,
+                    description);
             Unirest.shutDown();
             CheckRepository.save(check);
 
