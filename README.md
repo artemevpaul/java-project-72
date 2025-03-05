@@ -2,6 +2,8 @@
 
 A simple web application that checks websites for SEO readiness and availability.
 
+Deployed [Demo version](https://java-project-72-u7pe.onrender.com) on Render.com
+
 ## ⚡ Tech Stack
 - **Java 17**, Javalin, Gradle
 - **Database:** H2 (Dev), PostgreSQL (Prod)
