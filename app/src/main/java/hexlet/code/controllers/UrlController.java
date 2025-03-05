@@ -68,9 +68,10 @@ public class UrlController {
 
     public static void showList(Context ctx) throws SQLException {
         var urls = UrlRepository.getEntities();
+        var latestChecks = CheckRepository.getLastChecks();
         String flash = ctx.consumeSessionAttribute("flash");
         String flashtype = ctx.consumeSessionAttribute("flash-type");
-        var page = new UrlsPage(urls, flash, flashtype);
+        var page = new UrlsPage(urls, latestChecks, flash, flashtype);
         ctx.render("urls/list.jte", model("page", page));
     }
 

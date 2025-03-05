@@ -4,6 +4,7 @@
 
 
 @template.layout.page(
+page = page,
 content = @`
     <main class="flex-grow-1">
 
@@ -19,7 +20,7 @@ content = @`
                         <th class="col-1">ID</th>
                         <th>Имя</th>
                         <th class="col-2">Последняя проверка</th>
-                        <th class="col-1">Код ответа</th>
+                        <th class="col-2">Код ответа</th>
                     </tr>
                     </thead>
                     @for(var url : page.getUrls())
@@ -32,8 +33,8 @@ content = @`
                         <td>
                             <a href="${NamedRoutes.urlPath(url.getId())}">${url.getName()}</a>
                         </td>
-                        <td>${url.getLastCheck() == null ? "Проверка не проводилась" : url.getLastCheck().getCreatedAt().toString()}</td>
-                        <td>${url.getLastCheck() == null ? "Проверка не проводилась" : String.valueOf(url.getLastCheck().getStatusCode())}</td>
+                        <td>${page.getLatestChecks().isEmpty() || page.getLatestChecks().get(url.getId()) == null ? "Проверка не проводилась" : page.getLatestChecks().get(url.getId()).getCreatedAt().toString()}</td>
+                        <td>${page.getLatestChecks().isEmpty() || page.getLatestChecks().get(url.getId()) == null ? "Проверка не проводилась" : String.valueOf(page.getLatestChecks().get(url.getId()).getStatusCode())}</td>
                     </tr>
                     @endfor
                     </tbody>
