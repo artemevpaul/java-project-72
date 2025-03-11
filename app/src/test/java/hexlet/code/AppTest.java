@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -67,6 +66,7 @@ public class AppTest {
         JavalinTest.test(app, (server, client) -> {
             var requestBody = "url=https://www.youtube.com";
             var response = client.post("/urls", requestBody);
+            assertThat(UrlRepository.findName("https://www.youtube.com")).isPresent();
             assertThat(response.code()).isEqualTo(200);
             assertThat(response.body().string()).contains("https://www.youtube.com");
         });
@@ -75,10 +75,10 @@ public class AppTest {
     @Test
     public void testUrlPage() throws SQLException {
         var url = new Url("https://www.youtube.com");
-        url.setCreatedAt(LocalDateTime.now());
         UrlRepository.save(url);
         JavalinTest.test(app, (server, client) -> {
             var response = client.get("/urls/" + url.getId());
+            assertThat(UrlRepository.findName("https://www.youtube.com")).isPresent();
             assertThat(response.code()).isEqualTo(200);
             assertThat(response.body().string()).contains("https://www.youtube.com");
         });

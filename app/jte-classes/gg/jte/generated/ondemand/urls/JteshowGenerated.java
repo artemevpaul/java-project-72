@@ -4,12 +4,23 @@ import hexlet.code.util.NamedRoutes;
 @SuppressWarnings("unchecked")
 public final class JteshowGenerated {
 	public static final String JTE_NAME = "urls/show.jte";
-	public static final int[] JTE_LINE_INFO = {0,0,1,2,2,2,2,4,4,6,6,11,11,11,17,17,17,21,21,21,25,25,25,31,31,31,31,31,31,31,31,31,46,46,47,47,49,49,49,50,50,50,51,51,51,52,52,52,53,53,53,54,54,54,56,56,57,57,63,63,63,63,63,2,2,2,2};
+	public static final int[] JTE_LINE_INFO = {0,0,1,2,2,2,2,4,4,6,6,9,9,10,10,10,10,11,11,11,14,14,18,18,18,24,24,24,28,28,28,32,32,32,38,38,38,38,38,38,38,38,38,53,53,54,54,56,56,56,57,57,57,58,58,58,59,59,59,60,60,60,61,61,61,63,63,64,64,70,70,70,70,70,2,2,2,2};
 	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, UrlPage page) {
 		jteOutput.writeContent("\n");
 		gg.jte.generated.ondemand.layout.JtepageGenerated.render(jteOutput, jteHtmlInterceptor, new gg.jte.html.HtmlContent() {
 			public void writeTo(gg.jte.html.HtmlTemplateOutput jteOutput) {
-				jteOutput.writeContent("\n    <main class=\"flex-grow-1\">\n\n        <section>\n            <div class=\"container-lg mt-5\">\n                <h1>Сайт: ");
+				jteOutput.writeContent("\n    <main class=\"flex-grow-1\">\n        <div>\n            ");
+				if (page != null && page.getFlash() != null) {
+					jteOutput.writeContent("\n                <div class=\"rounded-0 m-0 alert alert-dismissible fade show alert-");
+					jteOutput.setContext("div", "class");
+					jteOutput.writeUserContent(page.getFlashType());
+					jteOutput.setContext("div", null);
+					jteOutput.writeContent("\" role=\"alert\">\n                    <p class=\"m-0\">");
+					jteOutput.setContext("p", null);
+					jteOutput.writeUserContent(page.getFlash());
+					jteOutput.writeContent("</p>\n                    <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>\n                </div>\n            ");
+				}
+				jteOutput.writeContent("\n        </div>\n        <section>\n            <div class=\"container-lg mt-5\">\n                <h1>Сайт: ");
 				jteOutput.setContext("h1", null);
 				jteOutput.writeUserContent(page.getUrl().getName());
 				jteOutput.writeContent("</h1>\n\n                <table class=\"table table-bordered table-hover mt-3\">\n                    <tbody>\n                    <tr>\n                        <td>ID</td>\n                        <td>");
