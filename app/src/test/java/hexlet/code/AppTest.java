@@ -15,6 +15,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -24,12 +26,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AppTest {
     public static String baseUrl;
     static MockWebServer mockServer;
-    static String urlName;
     private Javalin app;
+
+    public static final String TEST_PAGE = "TestPage.html";
+
+    public static String getFile() throws IOException {
+        var path = Paths.get("src", "test", "resources", "TestPage.html").toAbsolutePath().normalize();
+        return Files.readString(path);
+    }
 
     @BeforeAll
     static void serverSetUp() throws Exception {
         mockServer = new MockWebServer();
+        MockResponse mockResponse = new MockResponse()
+                .setBody(getFile())
+                .setResponseCode(200);
+        mockServer.enqueue(mockResponse);
         mockServer.start();
         baseUrl = mockServer.url("/").toString();
     }
@@ -86,14 +98,6 @@ public class AppTest {
 
     @Test
     void testCheckUrl() throws SQLException {
-        String testHtml = "<html><head><title>Test Site</title></head>"
-                + "<body><h1>Welcome</h1>"
-                + "<meta name='description' content='Test description'>"
-                + "</body></html>";
-        MockResponse mockResponse = new MockResponse()
-                .setResponseCode(200)
-                .setBody(testHtml);
-        mockServer.enqueue(mockResponse);
         var url = new Url(baseUrl);
         UrlRepository.save(url);
         var savedUrl = UrlRepository.findName(url.getName()).orElseThrow();
